@@ -42,8 +42,8 @@ class CategoryController extends Controller
             "slug"=>$request->slug,
             "status"=>$request->status,
         ]);
-        // $request->session()->flush('success','Category added successfully');
-        return redirect()->back();
+        
+        return redirect()->route('category.all')->with('success','Category added successfully');
 
     }
 

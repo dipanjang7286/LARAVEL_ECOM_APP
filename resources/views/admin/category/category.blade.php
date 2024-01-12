@@ -3,6 +3,8 @@
 @section('content')
 <!-- Content Header (Page header) -->
 <div class="content-header">
+    {{-- showing session messages here --}}
+    @include('admin.message')
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
@@ -11,7 +13,7 @@
             <div class="col-sm-6">
                 <ul class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item">
-                        <a href="#" class="btn btn-primary">Back</a>
+                        <a href="{{route('category.create')}}" class="btn btn-primary">Add Category</a>
                     </li>
                 </ul>
             </div>
@@ -49,7 +51,10 @@
                         @endif
                         
                     </td>
-                    <td>{{$value->status}}</td>
+                    <td>
+                        <a href="#" class="btn btn-warning">Edit</a>
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </td>
 
                 </tr>
                 @endforeach

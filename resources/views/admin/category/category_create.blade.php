@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ul class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="#" class="btn btn-primary">Back</a>
+                            <a href="{{route('category.all')}}" class="btn btn-primary">Back</a>
                         </li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" id="cancel" class="btn btn-danger ml-2">Cancel</button>
+                    <a href="{{route('category.all')}}" class="btn btn-danger ml-2">Cancel</a>
                 </div>
             </form>
         </div>
@@ -77,13 +77,7 @@
 
 @section('customJs')
     <script>
-        $("body").on('click','#cancel',function(){
-
-            // $(':input').val(''); // Clear all form inputs
-            location.reload(); // Reload the page
-
-        })
-
+        
         $('body').on('change','#categoryName',function(){
             let element = $(this);
             $.ajax({
