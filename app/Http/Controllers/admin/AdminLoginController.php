@@ -13,26 +13,47 @@ class AdminLoginController extends Controller
         return view('admin.login');
     }
 
-    public function authenticate(Request $request){
-        $validator = Validator::make($request->all(),[
-            'email'=>'required',
-            'password'=>'required',
-        ]);
+    // public function authenticate(Request $request){
+    //     $validator = Validator::make($request->all(),[
+    //         'email'=>'required',
+    //         'password'=>'required',
+    //     ]);
 
-        if($validator->passes()){
-            if(Auth::guard('admin')->attempt(['email'=>$request->email, 'password'=>$request->password],$request->get('remember'))){
-                $admin = Auth::guard('admin')->user();
-                if((int)$admin->role === 2){ // admin
-                    return redirect()->route('admin.dashboard');
-                }else{
-                    Auth::guard('admin')->logout();
-                    return redirect()->route('admin.login')->with('error','You have no access of this page');
-                }
-            }else{
-                return redirect()->route('admin.login')->with('error','Either email or password is incorrect');
-            }
+    //     if($validator->passes()){
+    //         if(Auth::guard('admin')->attempt(['email'=>$request->email, 'password'=>$request->password],$request->get('remember'))){
+    //             $admin = Auth::guard('admin')->user();
+    //             if((int)$admin->role === 2){ // admin
+    //                 return redirect()->route('admin.dashboard');
+    //             }else{
+    //                 Auth::guard('admin')->logout();
+    //                 return redirect()->route('admin.login')->with('error','You have no access of this page');
+    //             }
+    //         }else{
+    //             return redirect()->route('admin.login')->with('error','Either email or password is incorrect');
+    //         }
+    //     }else{
+    //         return redirect()->route('admin.login')->withErrors($validator)->withInput($request->only('email'));
+    //     }
+    // }
+
+
+    public function authenticate(Request $request){
+
+        $request->validate(
+            [
+                "email"=> "required",
+                "password"=>"required",
+            ],
+            [
+                "email.required"=> "The email is empty!! Please enter email.",
+                "password.required"=> "The password is empty!! Please enter password",
+            ]
+        );
+
+        if(Auth::guard('admin')->attempt(['email'=>$request->email, 'password'=>$request->password], $request->get('remember'))){
+            return redirect()->route('admin.dashboard');
         }else{
-            return redirect()->route('admin.login')->withErrors($validator)->withInput($request->only('email'));
-        }
+            return redirect()->route('admin.login')->with('error','Either email or password is incorrect');
+        }   
     }
 }
