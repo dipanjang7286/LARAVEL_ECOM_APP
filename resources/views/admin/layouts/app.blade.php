@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="{{ asset('admin_assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin_assets/css/adminlte.min.css') }}">
+
+    {{-- Dropzone css --}}
+    <link rel="stylesheet" href="{{ asset('admin_assets/plugins/dropzone/min/dropzone.min.css') }}">
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -86,6 +89,8 @@
     <script src="{{asset('admin_assets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('admin_assets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('admin_assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+    {{-- Dropzone js --}}
+    <script src="{{asset('admin_assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
     @yield('customJs')
 </body>
 

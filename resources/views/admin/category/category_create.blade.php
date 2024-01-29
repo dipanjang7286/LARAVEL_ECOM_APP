@@ -40,18 +40,14 @@
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    {{-- <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile">
-                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                            </div>
-                            <div class="input-group-append">
-                                <span class="input-group-text">Upload</span>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <div class="dropzone dz-clickable" id="image">
+                            <div class="dz-message needsClick">
+                                <br>Drop files here or click to upload <br><br>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="form-group">
                         <label for="categoryStatus">Status</label>
                         <select name="status" id="categoryStatus" class="form-control">
