@@ -90,5 +90,29 @@
             })
         })
 
+        Dropzone.autoDiscover = false;
+        const dropzone = $('#image').dropzone({
+            init: function(){
+                this.on('addedFile', function(file){
+                    if(this.files.length > 1){
+                        this.removeFile(this.files[0])
+                    }
+                })
+            },
+            url: "{{route('admin.dashboard')}}", // post route for image upload for category
+            maxFiles: 1,
+            paramName: 'image', // by default paramName : 'file'. I change it to 'image'.
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, res){
+                $('#image_id').val(res.image_id)
+            }
+        })
+
+
+
     </script>
 @endsection
