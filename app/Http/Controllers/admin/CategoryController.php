@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 use Validator;
 
@@ -62,6 +65,15 @@ class CategoryController extends Controller
             $sourcePath = public_path().'/temp/'.$tempImage->name;
             $destinationPath = public_path().'/uploads/category/'.$newImageName;
             File::copy($sourcePath, $destinationPath);
+
+            // Generate Image Thumbnail
+            $dsetnPath = public_path().'/uploads/category/thumb/'.$newImageName;
+            $manager = new ImageManager(Driver::class);
+            $image = $manager->read($sourcePath);
+            $image->resize(450, 600);
+            $image->save($dsetnPath);
+
+            // saving image name in the db
             $category->image = $newImageName;
             $category->save();
         }
