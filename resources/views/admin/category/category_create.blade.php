@@ -41,8 +41,9 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <input type="hidden" name="image_id" id="image_id">
                         <label for="image">Image</label>
-                        <div class="dropzone dz-clickable" id="image">
+                        <div class="dropzone dz-clickable form-control" id="image">
                             <div class="dz-message needsClick">
                                 <br>Drop files here or click to upload <br><br>
                             </div>
@@ -99,7 +100,7 @@
                     }
                 })
             },
-            url: "{{route('admin.dashboard')}}", // post route for image upload for category
+            url: "{{route('temp-image.create')}}", // post route for image upload for category
             maxFiles: 1,
             paramName: 'image', // by default paramName : 'file'. I change it to 'image'.
             addRemoveLinks: true,

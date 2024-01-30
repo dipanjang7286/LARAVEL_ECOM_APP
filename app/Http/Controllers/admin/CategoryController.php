@@ -4,7 +4,10 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\TempImage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+
 use Validator;
 
 class CategoryController extends Controller
@@ -37,11 +40,31 @@ class CategoryController extends Controller
             ]
         );
 
-        Category::insert([
-            "name"=>$request->name,
-            "slug"=>$request->slug,
-            "status"=>$request->status,
-        ]);
+        // Category::insert([
+        //     "name"=>$request->name,
+        //     "slug"=>$request->slug,
+        //     "status"=>$request->status,
+        // ]);
+
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = $request->slug;
+        $category->status = $request->status;
+        $category->save();
+
+        if(!empty($request->image_id)){
+            $tempImage = TempImage::find($request->image_id);
+            $extensionArray = explode('.', $tempImage->name);
+            $imageExtension = last($extensionArray);
+
+            $newImageName = $category->id .'.'.$imageExtension;
+            // copying image from temp to uploads folder
+            $sourcePath = public_path().'/temp/'.$tempImage->name;
+            $destinationPath = public_path().'/uploads/category/'.$newImageName;
+            File::copy($sourcePath, $destinationPath);
+            $category->image = $newImageName;
+            $category->save();
+        }
         
         return redirect()->route('category.all')->with('success','Category added successfully');
 
