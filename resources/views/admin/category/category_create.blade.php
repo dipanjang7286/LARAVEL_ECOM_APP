@@ -24,18 +24,22 @@
     <section class="content">
         <div class="container-fluid">
             <form action="{{$url}}" method="post">
+                @php
+                    $urlForCheck = url('').'/admin/category/store';
+                    // here checking the url is for adding category or updating category
+                @endphp
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
                         <label for="categoryName">Category Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="categoryName" placeholder="Enter category name">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="categoryName" placeholder="Enter category name" value="{{ $url == $urlForCheck ? old('name') : $category->name}}">
                         @error('name')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="categorySlug">Category Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="categorySlug" placeholder="Enter category slug" readonly>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="categorySlug" placeholder="Enter category slug" value="{{ $url == $urlForCheck ? old('slug') : $category->slug}}" readonly>
                         @error('slug')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
@@ -49,11 +53,19 @@
                             </div>
                         </div>
                     </div>
+                    @if (!empty($category->image))
+                        <div class="form-group">
+                            <label for="">Previous Image</label>
+                            <div>
+                                <img width="250" src="{{ asset('uploads/category/thumb/'.$category->image) }}" alt="">
+                            </div>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <label for="categoryStatus">Status</label>
                         <select name="status" id="categoryStatus" class="form-control">
-                            <option value="1">Active</option>
-                            <option value="0">Block</option>
+                            <option value="1" {{($url != $urlForCheck && $category->status == '1') ? 'selected' : ''}}>Active</option>
+                            <option value="0" {{($url != $urlForCheck && $category->status == '0') ? 'selected' : ''}}>Block</option>
                         </select>
                         @error('status')
                             <span class="text-danger">{{$message}}</span>

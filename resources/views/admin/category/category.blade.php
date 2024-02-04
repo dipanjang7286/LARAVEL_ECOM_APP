@@ -52,7 +52,7 @@
                         
                     </td>
                     <td>
-                        <a href="#" class="btn btn-warning">Edit</a>
+                        <a href="{{route('category.edit', ['id'=>$value->id])}}" class="btn btn-warning">Edit</a>
                         <a href="#" class="btn btn-danger">Delete</a>
                     </td>
 

@@ -54,7 +54,8 @@ class CategoryController extends Controller
         $category->slug = $request->slug;
         $category->status = $request->status;
         $category->save();
-
+        
+        // Image
         if(!empty($request->image_id)){
             $tempImage = TempImage::find($request->image_id);
             $extensionArray = explode('.', $tempImage->name);
@@ -83,14 +84,75 @@ class CategoryController extends Controller
     }
 
     public function edit($id){ // show the edit page
-        $title = "Update Category";
-        $url = url("admin/category/update/").$id;
-        $data = compact('title','url');
-        return view('admin.category.category_create')->with($data);
+        $category = Category::find($id);
+        if(is_null($category)){
+            return redirect()->route('category.all');
+        }else{
+            $title = "Update Category";
+            $url = url("admin/category/update").'/'.$id;
+            $data = compact('category','title','url');
+            return view('admin.category.category_create')->with($data);
+        }
     }
 
-    public function update(){ // update particular category in db
+    public function update($id, Request $request){ // update particular category in db
+        $category = Category::find($id);
+        if(empty($category)){
+            return response()->json([
+                'status'=>false,
+                'notFound'=>true,
+                'message'=>'Category not found'
+            ]);
+        }
+        $request->validate(
+            [
+                "name"=> "required",
+                "slug"=>"required|unique:categories,slug,".$id.",id",
+                "status"=>"required",
+            ],
+            [
+                "name.required"=> "The category name is Empty",
+                "slug.required"=> "The category slug is empty.",
+                "slug.unique"=> "The category slug is already present. Please enter different slug",
+                "slug.status"=> "The category status is empty.",
+            ]
+        );
 
+        $category->name = $request->name;
+        $category->slug = $request->slug;
+        $category->status = $request->status;
+        $category->save();
+
+        // Image
+        $oldImage = $category->image;
+        if(!empty($request->image_id)){
+            $tempImage = TempImage::find($request->image_id);
+            $extensionArray = explode('.', $tempImage->name);
+            $imageExtension = last($extensionArray);
+
+            $newImageName = $category->id.'-'.time().'.'.$imageExtension;
+            // copying image from temp to uploads folder
+            $sourcePath = public_path().'/temp/'.$tempImage->name;
+            $destinationPath = public_path().'/uploads/category/'.$newImageName;
+            File::copy($sourcePath, $destinationPath);
+
+            // Generate Image Thumbnail
+            $dsetnPath = public_path().'/uploads/category/thumb/'.$newImageName;
+            $manager = new ImageManager(Driver::class);
+            $image = $manager->read($sourcePath);
+            $image->resize(450, 600);
+            $image->save($dsetnPath);
+
+            // saving image name in the db
+            $category->image = $newImageName;
+            $category->save();
+
+            // delete old image
+            File::delete(public_path().'/uploads/category/thumb/'.$oldImage);
+            File::delete(public_path().'/uploads/category/'.$oldImage);
+        }
+
+        return redirect()->route('category.all')->with('success','Category updated successfully');
     }
 
     public function delete(){ // delete the category
