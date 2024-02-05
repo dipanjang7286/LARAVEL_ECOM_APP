@@ -158,9 +158,9 @@ class CategoryController extends Controller
     public function delete($id, Request $request){ // delete the category
         $category = Category::find($id);
         if(empty($category)){
+            $request->session()->flash('error','Category not found');
             return response()->json([
                 'status'=>false,
-                'notFound'=>true,
                 'message'=>'Category not found'
             ]);
         }

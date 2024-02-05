@@ -98,6 +98,8 @@
 
                     if(res.status==true){
                         window.location.href="{{ route('category.all') }}";
+                    }else{
+                        window.location.reload();
                     }
                 }
             });
