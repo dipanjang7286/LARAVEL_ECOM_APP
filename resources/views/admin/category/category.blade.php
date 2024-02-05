@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         <a href="{{route('category.edit', ['id'=>$value->id])}}" class="btn btn-warning">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="#" onclick="deleteCategory({{ $value->id }})" class="btn btn-danger">Delete</a>
                     </td>
 
                 </tr>
@@ -78,5 +78,30 @@
       "responsive": true,
     });
     
+</script>
+<script>
+    function deleteCategory(id){
+        // console.log(id);
+        var url = "{{ route('category.delete', 'ID') }}";
+        var newUrl = url.replace("ID", id);
+        // alert(newUrl);
+        if(confirm("Are you sure!! you want to delete this category?")){
+            $.ajax({
+                url: newUrl,
+                type:'POST',
+                data: {},
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+
+                    if(res.status==true){
+                        window.location.href="{{ route('category.all') }}";
+                    }
+                }
+            });
+        }    
+    }
 </script>
 @endsection

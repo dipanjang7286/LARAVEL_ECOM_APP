@@ -40,6 +40,7 @@ Route::group(['prefix'=>'admin'],function(){
         Route::post('/category/store',[CategoryController::class, 'store'])->name('category.store');
         Route::get('/category/edit/{id}',[CategoryController::class, 'edit'])->name('category.edit');
         Route::post('/category/update/{id}',[CategoryController::class, 'update'])->name('category.update');
+        Route::post('/category/delete/{id}',[CategoryController::class, 'delete'])->name('category.delete');
 
         Route::post('/upload-temp-image',[TempImagesController::class, 'create'])->name('temp-image.create');
 

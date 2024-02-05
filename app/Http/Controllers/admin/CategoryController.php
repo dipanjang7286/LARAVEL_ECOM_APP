@@ -155,7 +155,28 @@ class CategoryController extends Controller
         return redirect()->route('category.all')->with('success','Category updated successfully');
     }
 
-    public function delete(){ // delete the category
+    public function delete($id, Request $request){ // delete the category
+        $category = Category::find($id);
+        if(empty($category)){
+            return response()->json([
+                'status'=>false,
+                'notFound'=>true,
+                'message'=>'Category not found'
+            ]);
+        }
+
+        File::delete(public_path().'/uploads/category/thumb/'.$category->image);
+        File::delete(public_path().'/uploads/category/'.$category->image);
+
+        $category->delete();
+
+        // return redirect()->route('category.all')->with('success','Category deleted successfully');
+        
+        $request->session()->flash('success','Category deleted successfully');
+        return response()->json([
+            'status'=>true,
+            'message'=>'Category deleted successfully'
+        ]);
 
     }
 
