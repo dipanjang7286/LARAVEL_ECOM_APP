@@ -97,7 +97,7 @@
                 dataType:'json',
                 success: function(response){
                     if(response['status']==true){
-                        $('#categorySlug').val(response['slug']);
+                        $('#subCategorySlug').val(response['slug']);
                     }
                 }
 
