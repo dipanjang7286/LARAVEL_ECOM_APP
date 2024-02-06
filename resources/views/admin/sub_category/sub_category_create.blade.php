@@ -27,6 +27,7 @@
                 @php
                     $urlForCheck = url('').'/admin/sub-category/store';
                     // here checking the url is for adding category or updating category
+                    $category;
                 @endphp
                 @csrf
                 <div class="card-body">
