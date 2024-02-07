@@ -48,4 +48,17 @@ class SubCategoryController extends Controller
 
         return redirect()->route('sub-category.all')->with('success','Sub-category added successfully');
     }
+
+    public function edit($id){ // show the edit page
+        $subCategory = SubCategory::find($id);
+        $category = Category::orderBy('name', 'ASC')->get();
+        if(is_null($subCategory)){
+            return redirect()->route('sub-category.all');
+        }else{
+            $title = "Update Sub-category";
+            $url = url("admin/sub-category/update").'/'.$id;
+            $data = compact('subCategory','category','title','url');
+            return view('admin.sub_category.sub_category_create')->with($data);
+        }
+    }
 }

@@ -37,7 +37,7 @@
                             <option value="">Please select a category</option>
                             @if (!empty($category))
                                 @foreach ($category as $item)
-                                    <option value="{{ $item->id }}">{{$item->name}}</option>
+                                    <option value="{{ $item->id }}" {{ ($url != $urlForCheck && $subCategory->category_id == $item->id) ? 'selected' : '' }}>{{$item->name}}</option>
                                 @endforeach
                             @endif
 
@@ -49,14 +49,14 @@
 
                     <div class="form-group">
                         <label for="subCategoryName">Sub-category Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name" value="{{old('name')}}">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name" value="{{ $url == $urlForCheck ? old('name') : $subCategory->name}}">
                         @error('name')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="subCategorySlug">Sub-category Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" value="{{old('slug')}}" readonly>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" value="{{ $url == $urlForCheck ? old('slug') : $subCategory->slug}}" readonly>
                         @error('slug')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
@@ -65,8 +65,8 @@
                     <div class="form-group">
                         <label for="subCategoryStatus">Status</label>
                         <select name="status" id="subCategoryStatus" class="form-control">
-                            <option value="1">Active</option>
-                            <option value="0">Block</option>
+                            <option value="1" {{ ($url != $urlForCheck && $subCategory->status == '1') ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ ($url != $urlForCheck && $subCategory->status == '0') ? 'selected' : '' }}>Block</option>
                         </select>
                         @error('status')
                             <span class="text-danger">{{$message}}</span>
