@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 class SubCategoryController extends Controller
 {
     public function index(){
-        
+        $subCategory = SubCategory::latest()->paginate(10);
+        $data = compact('subCategory');
+        return view('admin.sub_category.sub-category')->with($data);
     }
     public function create(){
         $title = "Add Sub-category";
