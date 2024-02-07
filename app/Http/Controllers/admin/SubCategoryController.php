@@ -81,7 +81,8 @@ class SubCategoryController extends Controller
             [
                 "category"=>"required",
                 "name"=> "required",
-                "slug"=>"required|unique:sub_categories",
+                // "slug"=>"required|unique:sub_categories",
+                "slug"=>"required|unique:sub_categories,slug,".$subCategory->id.",id", // this line will check if there is any other same slug except which, we are editing.
                 "status"=>"required",
             ],
             [
