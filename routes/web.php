@@ -45,8 +45,8 @@ Route::group(['prefix'=>'admin'],function(){
 
         // sub-category
         Route::prefix('sub-category')->group(function () {
-            Route::get('/create',[SubCategoryController::class, 'create'])->name('sub-category.create');
             Route::get('/all',[SubCategoryController::class, 'index'])->name('sub-category.all');
+            Route::get('/create',[SubCategoryController::class, 'create'])->name('sub-category.create');
             Route::post('/store',[SubCategoryController::class, 'store'])->name('sub-category.store');
         });
             

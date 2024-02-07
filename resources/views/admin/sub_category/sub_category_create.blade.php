@@ -27,46 +27,46 @@
                 @php
                     $urlForCheck = url('').'/admin/sub-category/store';
                     // here checking the url is for adding category or updating category
-                    $category;
                 @endphp
                 @csrf
                 <div class="card-body">
+
+                    <div class="form-group">
+                        <label for="category">Select Category</label>
+                        <select name="category" id="category" class="form-control">
+                            <option>Please select a category</option>
+                            @if (!empty($category))
+                                @foreach ($category as $item)
+                                    <option value="{{ $item->id }}">{{$item->name}}</option>
+                                @endforeach
+                            @endif
+
+                        </select>
+                        @error('category')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="subCategoryName">Sub-category Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name" value="{{ $url == $urlForCheck ? old('name') : $category->name}}">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name">
                         @error('name')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="subCategorySlug">Sub-category Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" value="{{ $url == $urlForCheck ? old('slug') : $category->slug}}" readonly>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" readonly>
                         @error('slug')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <input type="hidden" name="image_id" id="image_id">
-                        <label for="image">Image</label>
-                        <div class="dropzone dz-clickable form-control" id="image">
-                            <div class="dz-message needsClick">
-                                <br>Drop files here or click to upload <br><br>
-                            </div>
-                        </div>
-                    </div>
-                    @if (!empty($category->image))
-                        <div class="form-group">
-                            <label for="">Previous Image</label>
-                            <div>
-                                <img width="250" src="{{ asset('uploads/category/thumb/'.$category->image) }}" alt="">
-                            </div>
-                        </div>
-                    @endif
+                    
                     <div class="form-group">
                         <label for="subCategoryStatus">Status</label>
                         <select name="status" id="subCategoryStatus" class="form-control">
-                            <option value="1" {{($url != $urlForCheck && $category->status == '1') ? 'selected' : ''}}>Active</option>
-                            <option value="0" {{($url != $urlForCheck && $category->status == '0') ? 'selected' : ''}}>Block</option>
+                            <option value="1">Active</option>
+                            <option value="0">Block</option>
                         </select>
                         @error('status')
                             <span class="text-danger">{{$message}}</span>
