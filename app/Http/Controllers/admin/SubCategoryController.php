@@ -18,6 +18,9 @@ class SubCategoryController extends Controller
         $title = "Add Sub-category";
         $url = url('admin/sub-category/store');
         $category = Category::orderBy('name', 'ASC')->get();
+        if(is_null($category)){
+            return redirect()->route('sub-category.all')->with('error','No category found!!');
+        }
         $data = compact('title','url', 'category');
         return view('admin.sub_category.sub_category_create')->with($data);
     }
@@ -52,8 +55,11 @@ class SubCategoryController extends Controller
     public function edit($id){ // show the edit page
         $subCategory = SubCategory::find($id);
         $category = Category::orderBy('name', 'ASC')->get();
+        if(is_null($category)){
+            return redirect()->route('sub-category.all')->with('error','No category found!!');
+        }
         if(is_null($subCategory)){
-            return redirect()->route('sub-category.all');
+            return redirect()->route('sub-category.all')->with('error','Try to access a sub-category which is not present!!');
         }else{
             $title = "Update Sub-category";
             $url = url("admin/sub-category/update").'/'.$id;
