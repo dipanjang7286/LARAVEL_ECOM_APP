@@ -30,9 +30,10 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Name</th>
-                    <th>Slug</th>
-                    <th>Status</th>
+                    <th>Category Name</th>
+                    <th>Sub-Category Name</th>
+                    <th>Sub-Category Slug</th>
+                    <th>Sub-Category Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                 @foreach ($subCategory as $key => $value)
                 <tr>
                     <td>{{$key+1}}</td>
+                    <td>{{$value->category_name}}</td>
                     <td>{{$value->name}}</td>
                     <td>{{$value->slug}}</td>
                     <td>

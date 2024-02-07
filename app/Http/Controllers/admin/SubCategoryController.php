@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class SubCategoryController extends Controller
 {
     public function index(){
-        $subCategory = SubCategory::latest()->paginate(10);
+        $subCategory = SubCategory::select('sub_categories.*', 'categories.name as category_name')->latest('id')->join('categories','categories.id','sub_categories.category_id')->paginate(10);
         $data = compact('subCategory');
         return view('admin.sub_category.sub-category')->with($data);
     }
@@ -46,6 +46,6 @@ class SubCategoryController extends Controller
         $subCategory->status = $request->status;
         $subCategory->save();
 
-        return redirect()->route('sub-category.all')->with('success','Category added successfully');
+        return redirect()->route('sub-category.all')->with('success','Sub-category added successfully');
     }
 }

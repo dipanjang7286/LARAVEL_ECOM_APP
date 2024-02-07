@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label for="category">Select Category</label>
                         <select name="category" id="category" class="form-control">
-                            <option>Please select a category</option>
+                            <option value="">Please select a category</option>
                             @if (!empty($category))
                                 @foreach ($category as $item)
                                     <option value="{{ $item->id }}">{{$item->name}}</option>
@@ -49,14 +49,14 @@
 
                     <div class="form-group">
                         <label for="subCategoryName">Sub-category Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="subCategoryName" placeholder="Enter sub-category name" value="{{old('name')}}">
                         @error('name')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="subCategorySlug">Sub-category Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" readonly>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="subCategorySlug" placeholder="Enter category slug" value="{{old('slug')}}" readonly>
                         @error('slug')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
