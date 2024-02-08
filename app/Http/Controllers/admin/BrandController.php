@@ -10,7 +10,9 @@ use Illuminate\Validation\ValidationException;
 class BrandController extends Controller
 {
     public function index(){
-
+        $brands = Brand::latest()->paginate(10);
+        $data = compact('brands');
+        return view('admin.brands.brands')->with($data);
     }
 
     public function create(){
