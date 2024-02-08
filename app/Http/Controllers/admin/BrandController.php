@@ -39,33 +39,23 @@ class BrandController extends Controller
                 ]
             );
 
-            // $brand = new Brand();
-            // $brand->name = $request->name;
-            // $brand->slug = $request->slug;
-            // $brand->status = $request->status;
-            // $brand->save();
+            $brand = new Brand();
+            $brand->name = $request->name;
+            $brand->slug = $request->slug;
+            $brand->status = $request->status;
+            $brand->save();
 
             $response = [
                 'success' => true,
                 'message' => 'Brand created successfully.',
             ];
-
+            $request->session()->flash('success',$response['message']);
         } catch (ValidationException $e) {
             $response = [
                 'success' => false,
                 'message' => $e->validator->errors(),
             ];
         }
-        
-        
-        
-        
-
-        // $brand = new Brand();
-        // $brand->name = $request->name;
-        // $brand->slug = $request->slug;
-        // $brand->status = $request->status;
-        // $brand->save();
 
         return response()->json($response);
 

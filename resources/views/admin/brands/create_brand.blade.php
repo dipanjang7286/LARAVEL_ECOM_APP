@@ -33,17 +33,13 @@
 
                     <div class="form-group">
                         <label for="brandName">Brand Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="brandName" placeholder="Enter brand name" value="{{ $url == $urlForCheck ? old('name') : $brand->name}}">
-                        @error('name')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
+                        <input type="text" class="form-control" name="name" id="brandName" placeholder="Enter brand name" value="{{ $url == $urlForCheck ? old('name') : $brand->name}}">
+                        <p></p>
                     </div>
                     <div class="form-group">
                         <label for="brandSlug">Brand Slug</label>
-                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="brandSlug" placeholder="Enter brand slug" value="{{ $url == $urlForCheck ? old('slug') : $brand->slug}}" readonly>
-                        @error('slug')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
+                        <input type="text" class="form-control" name="slug" id="brandSlug" placeholder="Enter brand slug" value="{{ $url == $urlForCheck ? old('slug') : $brand->slug}}" readonly>
+                        <p></p>
                     </div>
                     
                     <div class="form-group">
@@ -52,9 +48,7 @@
                             <option value="1" {{ ($url != $urlForCheck && $brand->status == '1') ? 'selected' : '' }}>Active</option>
                             <option value="0" {{ ($url != $urlForCheck && $brand->status == '0') ? 'selected' : '' }}>Block</option>
                         </select>
-                        @error('status')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
+                        <p></p>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -85,10 +79,21 @@
                 success: function(res){
                     $('button[type=submit]').prop('disabled',false);
                     if(res.success==true){
-                        window.location.href = '{{route('brand.all')}}'
+                        window.location.href = '{{route('brand.all')}}';
                     }else{
                         let errors = res.message;
-                        console.log(errors);
+                        // console.log(errors);
+                        if(errors.name){
+                            $('#brandName').addClass("is-invalid").siblings('p').addClass('invalid-feedback').html(`${errors.name}`);
+                        }else{
+                            $('#brandName').removeClass("is-imvalid").siblings('p').removeClass('invalid-feedback').html("");
+                        }
+
+                        if(errors.slug){
+                            $('#brandSlug').addClass("is-invalid").siblings('p').addClass('invalid-feedback').html(`${errors.slug}`);
+                        }else{
+                            $('#brandSlug').removeClass("is-imvalid").siblings('p').removeClass('invalid-feedback').html("");
+                        }
                     }
                     
                 }
@@ -104,7 +109,7 @@
                 data:{title: element.val()},
                 dataType:'json',
                 success: function(response){
-                    if(response['status']==true){
+                    if(response.status==true){
                         $('#brandSlug').val(response['slug']);
                     }
                 }
