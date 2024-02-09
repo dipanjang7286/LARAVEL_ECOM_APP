@@ -52,8 +52,8 @@
                         
                     </td>
                     <td>
-                        <a href="" class="btn btn-warning">Edit</a>
-                        <a href="#" onclick="" class="btn btn-danger">Delete</a>
+                        <a href="{{route('brand.edit',['id'=>$value->id])}}" class="btn btn-warning">Edit</a>
+                        <a href="#" onclick="deleteBrand({{$value->id}})" class="btn btn-danger">Delete</a>
                     </td>
 
                 </tr>
@@ -80,6 +80,30 @@
     
 </script>
 <script>
-    
+    function deleteBrand(id){
+        // console.log(id);
+        var url = "{{ route('brand.delete', 'ID') }}";
+        var newUrl = url.replace("ID", id);
+        // alert(newUrl);
+        if(confirm("Are you sure!! you want to delete this brand?")){
+            $.ajax({
+                url: newUrl,
+                type:'POST',
+                data: {},
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res){
+
+                    if(res.status==true){
+                        window.location.href="{{ route('brand.all') }}";
+                    }else{
+                        window.location.reload();
+                    }
+                }
+            });
+        }    
+    }
 </script>
 @endsection
