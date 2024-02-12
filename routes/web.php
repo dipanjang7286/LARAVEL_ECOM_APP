@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\HomeController;
+use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,16 @@ Route::group(['prefix'=>'admin'],function(){
             Route::get('/edit/{id}',[BrandController::class, 'edit'])->name('brand.edit');
             Route::post('/update/{id}',[BrandController::class, 'update'])->name('brand.update');
             Route::post('/delete/{id}',[BrandController::class, 'delete'])->name('brand.delete');
+        });
+
+        // products
+        Route::prefix('product')->group(function(){
+            Route::get('/all',[ProductController::class, 'index'])->name('product.all');
+            Route::get('/create',[ProductController::class, 'create'])->name('product.create');
+            Route::post('/store',[ProductController::class, 'store'])->name('product.store');
+            Route::get('/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
+            Route::post('/update/{id}',[ProductController::class, 'update'])->name('product.update');
+            Route::post('/delete/{id}',[ProductController::class, 'delete'])->name('product.delete');
         });
             
 
