@@ -42,6 +42,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="image">Product Description</label>
+                        <textarea id="summernote">
+                            
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
                         <label for="category">Select Category</label>
                         <select name="category" id="category" class="form-control">
                             <option value="">Please select a category</option>
@@ -67,6 +74,19 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="brand">Select Brand</label>
+                        <select name="brand" id="brand" class="form-control">
+                            <option value="">Please select a brand</option>
+                            @if (!empty($brand))
+                                @foreach ($brand as $item)
+                                    <option value="{{ $item->id }}">{{$item->name}}</option>
+                                @endforeach
+                            @endif
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <input type="hidden" name="image_id" id="image_id">
                         <label for="image">Product image</label>
                         <div class="dropzone dz-clickable form-control" id="image">
@@ -75,7 +95,30 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="featuredProduct">Featured Product</label>
+                        <select name="featuredProduct" id="featuredProduct" class="form-control">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sku">SKU (Stock Keeping Unit)</label>
+                        <input type="text" class="form-control" name="sku" id="sku" placeholder="Enter product SKU" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="barcode">Barcode</label>
+                        <input type="text" class="form-control" name="barcode" id="barcode" placeholder="Enter product barcode" value="">
+                    </div>
+
                     
+                    <div class="form-group icheck-primary d-inline">
+                        <input type="checkbox" name="trackQuantity" id="trackQuantity" checked>
+                        <label for="trackQuantity">Track Quantity</label>
+                    </div>
 
                     <div class="form-group">
                         <label for="productStatus">Status</label>

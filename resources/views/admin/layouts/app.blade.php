@@ -18,6 +18,8 @@
 
     {{-- Dropzone css --}}
     <link rel="stylesheet" href="{{ asset('admin_assets/plugins/dropzone/min/dropzone.min.css') }}">
+    {{-- Summernote css--}}
+    <link rel="stylesheet" href="{{ asset('admin_assets/plugins/summernote/summernote-bs4.min.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -92,6 +94,16 @@
     <script src="{{asset('admin_assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
     {{-- Dropzone js --}}
     <script src="{{asset('admin_assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
+    {{-- Summernote js--}}
+    <script src="{{asset('admin_assets/plugins/summernote/summernote-bs4.min.js')}}"></script>
+    <script>
+        $(function () {
+          $('#summernote').summernote({
+            height:250
+          })
+        })
+      </script>
+
     @yield('customJs')
 </body>
 
