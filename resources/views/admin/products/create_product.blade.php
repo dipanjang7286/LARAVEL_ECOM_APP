@@ -67,6 +67,17 @@
                     </div>
 
                     <div class="form-group">
+                        <input type="hidden" name="image_id" id="image_id">
+                        <label for="image">Product image</label>
+                        <div class="dropzone dz-clickable form-control" id="image">
+                            <div class="dz-message needsClick">
+                                <br>Drop files here or click to upload <br><br>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-group">
                         <label for="productStatus">Status</label>
                         <select name="status" id="productStatus" class="form-control">
                             <option value="1">Active</option>
