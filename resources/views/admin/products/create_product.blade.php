@@ -32,8 +32,8 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="productName">Product Name</label>
-                        <input type="text" class="form-control" name="name" id="productName" placeholder="Enter product name" value="">
+                        <label for="productTitle">Product Title</label>
+                        <input type="text" class="form-control" name="slug" id="productTitle" placeholder="Enter product slug" value="">
                     </div>
 
                     <div class="form-group">
@@ -97,6 +97,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="price">Product Price</label>
+                        <input type="number" class="form-control" name="price" id="price" placeholder="Enter product price" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comAtprice">Compare at price</label>
+                        <input type="number" class="form-control" name="comAtprice" id="comAtprice" placeholder="Enter compare at price" value="">
+                        <span>To show a reduced price, move the product’s original price into Compare at price. Enter a lower value into Product Price.</span>
+                    </div>
+
+                    <div class="form-group">
                         <label for="featuredProduct">Featured Product</label>
                         <select name="featuredProduct" id="featuredProduct" class="form-control">
                             <option value="1">Yes</option>
@@ -118,6 +129,11 @@
                     <div class="form-group icheck-primary d-inline">
                         <input type="checkbox" name="trackQuantity" id="trackQuantity" checked>
                         <label for="trackQuantity">Track Quantity</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" class="form-control" name="quantity" id="quantity" placeholder="Enter product quantity" value="">
                     </div>
 
                     <div class="form-group">
