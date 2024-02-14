@@ -75,7 +75,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('sub-category.all') }}" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
+                        <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Sub Category
                             {{-- <i class="fas fa-angle-left right"></i>
@@ -95,7 +95,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tree"></i>
+                        <i class="nav-icon fas fa-tag"></i>
                         <p>
                             Products
                             {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -104,7 +104,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-edit"></i>
+                        <i class="nav-icon fas fa-truck"></i>
                         <p>
                             Shipping
                             {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -114,7 +114,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-shopping-bag"></i>
                         <p>
                             Orders
                             {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -123,7 +123,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-percent"></i>
                         <p>
                             Discount
                             {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -132,7 +132,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users
                             {{-- <i class="fas fa-angle-left right"></i> --}}
@@ -150,7 +150,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.logout') }}" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
                             Log Out
                             {{-- <i class="fas fa-angle-left right"></i> --}}
