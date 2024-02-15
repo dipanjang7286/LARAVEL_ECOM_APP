@@ -24,8 +24,8 @@ class ProductController extends Controller
         return view('admin.products.create_product')->with($data);
     }
 
-    public function store(){
-
+    public function store(Request $request){
+        var_dump($request->all());
     }
 
     public function edit(){

@@ -23,7 +23,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <form action="{{$url}}" method="post">
+        <form id="product_form" data-action="{{$url}}">
             @php
             $urlForCheck = url('').'/admin/product/store';
             // here checking the url is for adding category or updating category
@@ -253,5 +253,24 @@
 
             })
         })
+</script>
+<script>
+    $("#product_form").submit(function(e){
+        e.preventDefault();
+        let frmElement = $(this);
+        let url = frmElement.attr('data-action');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data:frmElement.serializeArray(),
+            dataType: 'json',
+            success: function(res){
+
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+    })
 </script>
 @endsection
