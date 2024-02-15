@@ -87,7 +87,7 @@
 @section('customJs')
     <script>
         
-        $('body').on('change','#categoryName',function(){
+        $('body').on('input','#categoryName',function(){
             let element = $(this);
             $.ajax({
                 url:"{{route('getSlug')}}",

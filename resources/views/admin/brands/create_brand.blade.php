@@ -101,7 +101,7 @@
         })
     </script>
     <script>
-        $('body').on('change','#brandName',function(){
+        $('body').on('input','#brandName',function(){
             let element = $(this);
             $.ajax({
                 url:"{{route('getSlug')}}",
