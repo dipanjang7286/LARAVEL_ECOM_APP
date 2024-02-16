@@ -88,25 +88,35 @@
         var url = "{{ route('sub-category.delete', 'ID') }}";
         var newUrl = url.replace("ID", id);
         // alert(newUrl);
-        if(confirm("Are you sure!! you want to delete this sub-category?")){
-            $.ajax({
-                url: newUrl,
-                type:'POST',
-                data: {},
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(res){
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this sub-category!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes !"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: newUrl,
+                    type:'POST',
+                    data: {},
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(res){
 
-                    if(res.status==true){
-                        window.location.href="{{ route('sub-category.all') }}";
-                    }else{
-                        window.location.reload();
+                        if(res.status==true){
+                            window.location.href="{{ route('sub-category.all') }}";
+                        }else{
+                            window.location.reload();
+                        }
                     }
-                }
-            });
-        }    
+                });
+            }
+        });  
     }
 </script>
 @endsection
