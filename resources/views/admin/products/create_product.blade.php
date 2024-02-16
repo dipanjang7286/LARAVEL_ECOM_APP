@@ -96,12 +96,6 @@
                                         <label for="subCategory">Select Sub Category</label>
                                         <select name="subCategory" id="subCategory" class="form-control">
                                             <option value="">Please select a sub-category</option>
-                                            @if (!empty($subCategory))
-                                            @foreach ($subCategory as $item)
-                                            <option value="{{ $item->id }}">{{$item->name}}</option>
-                                            @endforeach
-                                            @endif
-        
                                         </select>
                                     </div>
                                 </div>
@@ -239,20 +233,46 @@
 @section('customJs')
 <script>
     $('body').on('input','#productTitle',function(){
-            let element = $(this);
+        let element = $(this);
+        $.ajax({
+            url:"{{route('getSlug')}}",
+            type:'get',
+            data:{title: element.val()},
+            dataType:'json',
+            success: function(response){
+                if(response['status']==true){
+                    $('#productSlug').val(response['slug']);
+                }
+            }
+
+        })
+    });
+
+    $('body').on('change',"#category", function(){
+        let category_id = $(this).val();
+        if(category_id !=''){
+
             $.ajax({
-                url:"{{route('getSlug')}}",
+                url:"{{route('fetchSubCategoryByCategoryId')}}",
                 type:'get',
-                data:{title: element.val()},
+                data:{category_id: category_id},
                 dataType:'json',
                 success: function(response){
-                    if(response['status']==true){
-                        $('#productSlug').val(response['slug']);
-                    }
+                    $("#subCategory").find("option").not(':first').remove();
+                    $.each(response.subCategory, function(key,item){
+                        $("#subCategory").append(`<option value="${item.id}">${item.name}</option>`);
+                    });
+                    
                 }
 
             })
-        })
+
+        }else{
+            $("#subCategory").find("option").not(':first').remove();
+            // console.log('No sub category found');
+        }
+    })
+
 </script>
 <script>
     $("#product_form").submit(function(e){
