@@ -79,7 +79,7 @@
                 success: function(res){
                     $('button[type=submit]').prop('disabled',false);
                     if(res.success==true){
-                        window.location.href = '{{route('brand.all')}}';
+                        window.location.href = `{{route('brand.all')}}`;
                     }else{
                         let errors = res.message;
                         // console.log(errors);

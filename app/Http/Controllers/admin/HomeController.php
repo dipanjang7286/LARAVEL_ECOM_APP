@@ -14,6 +14,9 @@ class HomeController extends Controller
 
     public function logout(){
         Auth::guard('admin')->logout();
-        return redirect()->route('admin.login');
+        return response()->json([
+            "status"=>true,
+            "message"=>"Logged out successfull!!"
+        ]);
     }
 }

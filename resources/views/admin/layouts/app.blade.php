@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('admin_assets/plugins/dropzone/min/dropzone.min.css') }}">
     {{-- Summernote css--}}
     <link rel="stylesheet" href="{{ asset('admin_assets/plugins/summernote/summernote-bs4.min.css')}}">
+    {{-- sweet alert --}}
+    <link rel="stylesheet" href="{{ asset('admin_assets/plugins/sweetalert2/sweetalert2.min.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -96,11 +98,42 @@
     <script src="{{asset('admin_assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
     {{-- Summernote js--}}
     <script src="{{asset('admin_assets/plugins/summernote/summernote-bs4.min.js')}}"></script>
+    {{-- sweet alert --}}
+    <script src="{{asset('admin_assets/plugins/sweetalert2/sweetalert2.all.min.js')}}"></script>
     <script>
         $(function () {
           $('#summernote').summernote({
             height:250
           })
+        })
+      </script>
+      <script>
+        $('body').on('click','#logOut',function(){
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to logged out!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes !"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `{{ route('admin.logout') }}`,
+                        type:'get',
+                        success: function(res){
+                            if(res.status===true){
+                                window.location.href = `{{route('admin.login')}}`;
+                            }
+                        },
+                        error: function(error){
+                            console.log(error);
+                        }
+                    })
+                    
+                }
+            });
         })
       </script>
 
