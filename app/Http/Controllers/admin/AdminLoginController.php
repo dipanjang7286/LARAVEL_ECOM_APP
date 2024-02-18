@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendLoginMailJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,13 @@ class AdminLoginController extends Controller
         );
 
         if(Auth::guard('admin')->attempt(['email'=>$request->email, 'password'=>$request->password], $request->get('remember'))){
+
+            // login mail send
+            $name = Auth::guard('admin')->user()->name;
+            if(Auth::guard('admin')->user()->role ==2){
+                SendLoginMailJob::dispatch($request->email, $name, 30)->onQueue('emails');
+            }
+
             return redirect()->route('admin.dashboard');
         }else{
             return redirect()->route('admin.login')->with('error','Either email or password is incorrect');
