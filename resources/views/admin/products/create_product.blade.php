@@ -38,25 +38,28 @@
                             <div class="row justify-content-evenly">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="productTitle">Product Title</label>
-                                        <input type="text" class="form-control" name="slug" id="productTitle"
-                                            placeholder="Enter product slug" value="">
+                                        <label for="title">Product Title</label>
+                                        <input type="text" class="form-control" name="title" id="title"
+                                            placeholder="Enter product product title" value="">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="productSlug">Product Slug</label>
-                                        <input type="text" class="form-control" name="slug" id="productSlug"
+                                        <label for="slug">Product Slug</label>
+                                        <input type="text" class="form-control" name="slug" id="slug"
                                             placeholder="Enter category slug" value="" readonly>
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="image">Product Description</label>
-                                <textarea id="summernote">
+                                <textarea id="summernote" name="description">
 
                                 </textarea>
+                                <p class="error"></p>
                             </div>
 
                             <div class="form-group">
@@ -65,6 +68,7 @@
                                     <option value="1">Active</option>
                                     <option value="0">Block</option>
                                 </select>
+                                <p class="error"></p>
                             </div>
                             
 
@@ -85,6 +89,7 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -97,6 +102,7 @@
                                         <select name="subCategory" id="subCategory" class="form-control">
                                             <option value="">Please select a sub-category</option>
                                         </select>
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -117,6 +123,7 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -127,9 +134,10 @@
                                     <div class="form-group">
                                         <label for="featuredProduct">Featured Product</label>
                                         <select name="featuredProduct" id="featuredProduct" class="form-control">
-                                            <option value="1">Yes</option>
-                                            <option value="0" selected>No</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No" selected>No</option>
                                         </select>
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -150,6 +158,7 @@
                                         <br>Drop files here or click to upload <br><br>
                                     </div>
                                 </div>
+                                <p class="error"></p>
                             </div>
                         </div>
                     </div>
@@ -168,12 +177,14 @@
                                         <label for="price">Product Price</label>
                                         <input type="number" class="form-control" name="price" id="price"
                                             placeholder="Enter product price" value="">
+                                        <p class="error"></p>
                                     </div>
     
                                     <div class="form-group">
                                         <label for="comAtprice">Compare at price</label>
                                         <input type="number" class="form-control mb-2 pb-2" name="comAtprice" id="comAtprice"
                                             placeholder="Enter compare at price" value="">
+                                        <p class="error"></p>
                                         <span>To show a reduced price, move the product’s original price into Compare at price. Enter a
                                             lower value into Product Price.</span>
                                     </div>
@@ -192,24 +203,28 @@
                                         <label for="sku">SKU (Stock Keeping Unit)</label>
                                         <input type="text" class="form-control" name="sku" id="sku" placeholder="Enter product SKU"
                                             value="">
+                                        <p class="error"></p>
                                     </div>
     
                                     <div class="form-group">
                                         <label for="barcode">Barcode</label>
                                         <input type="text" class="form-control" name="barcode" id="barcode"
                                             placeholder="Enter product barcode" value="">
+                                        <p class="error"></p>
                                     </div>
     
     
                                     <div class="form-group icheck-primary d-inline">
-                                        <input type="checkbox" name="trackQuantity" id="trackQuantity" checked>
-                                        <label for="trackQuantity">Track Quantity</label>
+                                        <input type="hidden" name="trackQuantity" id="trackQuantity" value="Yes">
+                                        <input type="checkbox" id="trackQuantity_checkbox" checked>
+                                        <label for="trackQuantity_checkbox" class="ml-2">Track Quantity</label>
                                     </div>
     
                                     <div class="form-group">
                                         <label for="quantity">Quantity</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity"
                                             placeholder="Enter product quantity" value="">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +247,18 @@
 
 @section('customJs')
 <script>
-    $('body').on('input','#productTitle',function(){
+    $(document).ready(function() {
+        $('#trackQuantity_checkbox').change(function() {
+            if ($(this).is(':checked')) {
+                $("#trackQuantity").val('Yes');
+            } else {
+                $("#trackQuantity").val('No');
+            }
+        });
+    });
+</script>
+<script>
+    $('body').on('input','#title',function(){
         let element = $(this);
         $.ajax({
             url:"{{route('getSlug')}}",
@@ -241,7 +267,7 @@
             dataType:'json',
             success: function(response){
                 if(response['status']==true){
-                    $('#productSlug').val(response['slug']);
+                    $('#slug').val(response['slug']);
                 }
             }
 
@@ -279,13 +305,26 @@
         e.preventDefault();
         let frmElement = $(this);
         let url = frmElement.attr('data-action');
+        $('button[type=submit]').prop('disabled',true);
         $.ajax({
             url: url,
             type: 'post',
             data:frmElement.serializeArray(),
             dataType: 'json',
             success: function(res){
+                $('button[type=submit]').prop('disabled',false);
+                if(res.success==true){
+                        window.location.href = `{{route('product.all')}}`;
+                }else{
+                    let errors = res.message;
+                    // console.log(errors);
+                    $(".error").removeClass('invalid-feedback').html('');
+                    $(`input[type='text'], input[type=number], select`).removeClass('is-invalid');
+                    $.each(errors, function(key, value){
+                        $(`#${key}`).addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(value);
+                    });
 
+                }
             },
             error: function(err){
                 console.log(err);
