@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -33,7 +34,7 @@ class ProductController extends Controller
                     "category"=>"required",
                     "featuredProduct"=>"required|in:Yes,No",
                     "price"=>"required|numeric",
-                    "sku"=>"required",
+                    "sku"=>"required|unique:products",
                     "trackQuantity"=>"required|in:Yes,No",
                     "quantity" => ($request->trackQuantity && $request->trackQuantity == 'Yes') ? 'required|numeric' : '', // Conditional validation rule for quantity
                 ],
@@ -44,13 +45,33 @@ class ProductController extends Controller
                     "category.required"=> "The product category is empty",
                     "featuredProduct.required"=> "The feature product is not selected",
                     "price.required"=> "The product price is empty",
+                    "price.numeric" =>"The product price must be a number",
                     "sku.required"=> "The product sku is empty",
+                    "sku.unique"=> "The product sku is already present. Please enter different sku",
                     "trackQuantity.required"=> "The product track quantity is should be checked",
                     "quantity.required" => "The product quantity is required when track quantity is checked",
                     "quantity.numeric" => "The product quantity must be a number",
                     
                 ]
             );
+
+            $product = new Product();
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->comAtprice;
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->subCategory;
+            $product->brand_id = $request->brand;
+            $product->is_featured = $request->featuredProduct;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_quantity = $request->trackQuantity;
+            $product->quantity = $request->quantity;
+            $product->status = $request->status;
+            $product->save();
+
 
             $response = [
                 'success' => true,
