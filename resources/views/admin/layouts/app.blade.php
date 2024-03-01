@@ -23,6 +23,11 @@
     {{-- sweet alert --}}
     <link rel="stylesheet" href="{{ asset('admin_assets/plugins/sweetalert2/sweetalert2.min.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .dropzone{
+            min-height: 250px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">

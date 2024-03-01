@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
@@ -25,6 +29,8 @@ class ProductController extends Controller
     }
 
     public function store(Request $request){
+        // dd($request->image_array);
+        // exit();
         $response=[];
         try {
             $request->validate(
@@ -71,6 +77,38 @@ class ProductController extends Controller
             $product->quantity = $request->quantity;
             $product->status = $request->status;
             $product->save();
+
+            if(!empty($request->image_array)){
+                foreach($request->image_array as $tempImageId){
+                    $tempImageInfo = TempImage::find($tempImageId);
+                    $extensionArray = explode('.', $tempImageInfo->name);
+                    $extension = last($extensionArray); // like jpg, png
+
+                    $productImage = new ProductImage();
+                    $productImage->product_id = $product->id;
+                    $productImage->image = 'NULL';
+                    $productImage->save();
+
+                    $imageName = $product->id . '-' . $productImage->id . '-' . time() . '.' . $extension;
+                    // $imegeName example : 1-1-12334.jpg
+                    $productImage->image = $imageName;
+                    $productImage->save();
+
+                    // generate thumbnails
+                    // for large image
+                    $sourcepath = public_path() . '/temp/' . $tempImageInfo->name;
+                    $destinationPathForLarge = public_path() . '/uploads/product/large/' . $tempImageInfo->name;
+                    $manager = new ImageManager(Driver::class);
+                    $image = $manager->read($sourcepath);
+                    $image->scale(1400, null);
+                    $image->save($destinationPathForLarge);
+
+                    // small image
+                    $destinationPathForSmall = public_path() . '/uploads/product/small/' . $tempImageInfo->name;
+                    $image->cover(300, 300);
+                    $image->save($destinationPathForSmall);
+                }
+            }
 
 
             $response = [

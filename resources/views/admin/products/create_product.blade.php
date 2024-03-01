@@ -151,7 +151,6 @@
                         <div class="card-body">
 
                             <div class="form-group">
-                                <input type="hidden" name="image_id" id="image_id">
                                 <label for="image">Product image</label>
                                 <div class="dropzone dz-clickable form-control" id="image">
                                     <div class="dz-message needsClick">
@@ -161,6 +160,10 @@
                                 <p class="error"></p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row" id="product-galary">
+                        
                     </div>
 
                     <div class="row justify-content-evenly">
@@ -259,23 +262,26 @@
 
     Dropzone.autoDiscover = false;
     const dropzone = $('#image').dropzone({
-        init: function(){
-            this.on('addedFile', function(file){
-                if(this.files.length > 1){
-                    this.removeFile(this.files[0])
-                }
-            })
-        },
         url: "{{route('temp-image.create')}}", // post route for image upload for category
         maxFiles: 10,
         paramName: 'image', // by default paramName : 'file'. I change it to 'image'.
         addRemoveLinks: true,
-        acceptedFiles: "image/jpeg,image/png,image/gif",
+        acceptedFiles: "image/jpeg,image/jpg,image/png,image/gif",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(file, res){
-            $('#image_id').val(res.image_id)
+            let html = `
+            <div class="col-md-3">
+                <div class="card">
+                    <input type="hidden" name="image_array[]" value="${res.image_id}">
+                    <img src="${res.imagePath}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>`;
+            $("#product-galary").append(html);
         }
     })
 </script>
