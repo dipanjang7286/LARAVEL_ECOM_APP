@@ -16,7 +16,12 @@ use Intervention\Image\Drivers\Gd\Driver;
 class ProductController extends Controller
 {
     public function index(){
-        return view('admin.products.products');
+        $products = Product::latest('id')->paginate(10);
+
+        // $subCategory = SubCategory::select('sub_categories.*', 'categories.name as category_name')->latest('id')->join('categories','categories.id','sub_categories.category_id')->paginate(10);
+
+        $data = compact('products');
+        return view('admin.products.products')->with($data);
     }
 
     public function create(){
@@ -97,14 +102,14 @@ class ProductController extends Controller
                     // generate thumbnails
                     // for large image
                     $sourcepath = public_path() . '/temp/' . $tempImageInfo->name;
-                    $destinationPathForLarge = public_path() . '/uploads/product/large/' . $tempImageInfo->name;
+                    $destinationPathForLarge = public_path() . '/uploads/product/large/' . $imageName;
                     $manager = new ImageManager(Driver::class);
                     $image = $manager->read($sourcepath);
                     $image->scale(1400, null);
                     $image->save($destinationPathForLarge);
 
                     // small image
-                    $destinationPathForSmall = public_path() . '/uploads/product/small/' . $tempImageInfo->name;
+                    $destinationPathForSmall = public_path() . '/uploads/product/small/' . $imageName;
                     $image->cover(300, 300);
                     $image->save($destinationPathForSmall);
                 }
