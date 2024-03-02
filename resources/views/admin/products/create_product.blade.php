@@ -272,18 +272,24 @@
         },
         success: function(file, res){
             let html = `
-            <div class="col-md-3">
+            <div class="col-md-3" id="image-row-${res.image_id}">
                 <div class="card">
                     <input type="hidden" name="image_array[]" value="${res.image_id}">
                     <img src="${res.imagePath}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="javascript:void(0)" onclick="deleteImageFromCard(${res.image_id})" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>`;
             $("#product-galary").append(html);
+        },
+        complete: function(file){
+            this.removeFile(file);
         }
     })
+    function deleteImageFromCard(id){
+        $(`#image-row-${id}`).remove();
+    }
 </script>
 <script>
     $('body').on('input','#title',function(){

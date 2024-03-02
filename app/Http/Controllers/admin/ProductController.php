@@ -16,7 +16,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 class ProductController extends Controller
 {
     public function index(){
-        
+        return view('admin.products.products');
     }
 
     public function create(){
