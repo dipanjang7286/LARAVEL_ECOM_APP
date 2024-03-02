@@ -16,9 +16,9 @@ use Intervention\Image\Drivers\Gd\Driver;
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::latest('id')->paginate(10);
+        $products = Product::latest('id')->with('product_images')->paginate(10);
 
-        // $subCategory = SubCategory::select('sub_categories.*', 'categories.name as category_name')->latest('id')->join('categories','categories.id','sub_categories.category_id')->paginate(10);
+        // in the product model i define one relation for getting product image
 
         $data = compact('products');
         return view('admin.products.products')->with($data);
@@ -120,6 +120,7 @@ class ProductController extends Controller
                 'success' => true,
                 'message' => 'Product created successfully.',
             ];
+            $request->session()->flash('success',$response['message']);
         } catch (ValidationException $e) {
             $response = [
                 'success' => false,

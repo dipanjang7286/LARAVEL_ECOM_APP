@@ -30,8 +30,11 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Name</th>
-                    <th>Slug</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>SKU</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -41,13 +44,35 @@
                 @foreach ($products as $key => $value)
                 <tr>
                     <td>{{$key+1}}</td>
-                    <td>{{$value->title}}</td>
-                    <td>{{$value->slug}}</td>
+                    @php
+                        $productImage = $value->product_images->first();
+                    @endphp
                     <td>
-                        @if ($value->status == 1)
-                            {{"Active"}}
+                        @if (!empty($productImage->image))
+                            
+                            <img src="{{asset('uploads/product/small/' . $productImage->image)}}" class="img-thumbnail" width="50">
                         @else
-                            {{"In-Active"}}
+                            <img src="{{asset('admin_assets/img/default-150x150.png')}}" class="img-thumbnail" width="50">
+                        @endif
+                    </td>
+                    <td>{{$value->title}}</td>
+                    <td>{{$value->price}}</td>
+                    <td>{{$value->quantity}} left in stock</td>
+                    <td>{{$value->sku}}</td>
+                    <td class="align-middle text-center">
+                        @if ($value->status == 1)
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <!-- Success Tick Mark -->
+                                <circle cx="12" cy="12" r="11" fill="none" stroke="#63E6BE" stroke-width="2"/>
+                                <path d="M7 13l3 3 7-7" stroke="#63E6BE" stroke-width="2" fill="none" />
+                            </svg>
+                        @else
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <!-- Cross -->
+                                <circle cx="12" cy="12" r="11" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+                                <path d="M12 10.586l4.95-4.95c.39-.39 1.024-.39 1.414 0s.39 1.024 0 1.414L13.414 12l4.95 4.95c.39.39.39 1.024 0 1.414s-1.024.39-1.414 0L12 13.414l-4.95 4.95c-.39.39-1.024.39-1.414 0s-.39-1.024 0-1.414L10.586 12 5.636 7.05c-.39-.39-.39-1.024 0-1.414s1.024-.39 1.414 0L12 10.586z" fill="#FF6B6B"/>
+                            </svg>
                         @endif
                         
                     </td>
