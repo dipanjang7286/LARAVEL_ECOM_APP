@@ -28,7 +28,7 @@
 
         <table id="category-table" class="table table-bordered table-hover">
             <thead>
-                <tr>
+                <tr class="align-middle text-center">
                     <th>Id</th>
                     <th>Name</th>
                     <th>Slug</th>
@@ -39,11 +39,11 @@
             <tbody>
 
                 @foreach ($category as $key => $value)
-                <tr>
+                <tr class="align-middle text-center">
                     <td>{{$key+1}}</td>
                     <td>{{$value->name}}</td>
                     <td>{{$value->slug}}</td>
-                    <td class="align-middle text-center">
+                    <td>
                         @if ($value->status == 1)
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <!-- Success Tick Mark -->
@@ -54,15 +54,19 @@
                         
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <!-- Cross -->
-                                <circle cx="12" cy="12" r="11" fill="none" stroke="#FF6B6B" stroke-width="2"/>
-                                <path d="M12 10.586l4.95-4.95c.39-.39 1.024-.39 1.414 0s.39 1.024 0 1.414L13.414 12l4.95 4.95c.39.39.39 1.024 0 1.414s-1.024.39-1.414 0L12 13.414l-4.95 4.95c-.39.39-1.024.39-1.414 0s-.39-1.024 0-1.414L10.586 12 5.636 7.05c-.39-.39-.39-1.024 0-1.414s1.024-.39 1.414 0L12 10.586z" fill="#FF6B6B"/>
+                                <circle cx="12" cy="12" r="11" fill="none" stroke="#e40c0c" stroke-width="2"/>
+                                <path d="M12 10.586l4.95-4.95c.39-.39 1.024-.39 1.414 0s.39 1.024 0 1.414L13.414 12l4.95 4.95c.39.39.39 1.024 0 1.414s-1.024.39-1.414 0L12 13.414l-4.95 4.95c-.39.39-1.024.39-1.414 0s-.39-1.024 0-1.414L10.586 12 5.636 7.05c-.39-.39-.39-1.024 0-1.414s1.024-.39 1.414 0L12 10.586z" fill="#e40c0c"/>
                             </svg>
                         @endif
                         
                     </td>
                     <td>
-                        <a href="{{route('category.edit', ['id'=>$value->id])}}" class="btn btn-warning">Edit</a>
-                        <a href="#" onclick="deleteCategory({{ $value->id }})" class="btn btn-danger">Delete</a>
+                        <a href="{{route('category.edit', ['id'=>$value->id])}}" class="mr-2">
+                            <i class='fa fa-edit' style='color: #FFD43B'></i>
+                        </a>
+                        <a href="#" onclick="deleteCategory({{ $value->id }})">
+                            <i class="fas fa-solid fa-trash" style="color: #e40c0c;"></i>
+                        </a>
                     </td>
 
                 </tr>
