@@ -40,7 +40,7 @@
                                     <div class="form-group">
                                         <label for="title">Product Title</label>
                                         <input type="text" class="form-control" name="title" id="title"
-                                            placeholder="Enter product product title" value="">
+                                            placeholder="Enter product title" value="{{ $url == $urlForCheck ? old('title') : $product->title}}">
                                         <p class="error"></p>
                                     </div>
                                 </div>
@@ -48,16 +48,16 @@
                                     <div class="form-group">
                                         <label for="slug">Product Slug</label>
                                         <input type="text" class="form-control" name="slug" id="slug"
-                                            placeholder="Enter category slug" value="" readonly>
+                                            placeholder="Enter product slug" value="{{ $url == $urlForCheck ? old('slug') : $product->slug}}" readonly>
                                         <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="image">Product Description</label>
+                                <label for="summernote">Product Description</label>
                                 <textarea id="summernote" name="description">
-
+                                    {{ $url == $urlForCheck ? old('description') : $product->description}}
                                 </textarea>
                                 <p class="error"></p>
                             </div>
@@ -65,8 +65,8 @@
                             <div class="form-group">
                                 <label for="productStatus">Product Status</label>
                                 <select name="status" id="productStatus" class="form-control">
-                                    <option value="1">Active</option>
-                                    <option value="0">Block</option>
+                                    <option value="1" {{ ($url != $urlForCheck && $product->status == '1') ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ ($url != $urlForCheck && $product->status == '0') ? 'selected' : '' }}>Block</option>
                                 </select>
                                 <p class="error"></p>
                             </div>
@@ -85,7 +85,7 @@
                                             <option value="">Please select a category</option>
                                             @if (!empty($category))
                                             @foreach ($category as $item)
-                                            <option value="{{ $item->id }}">{{$item->name}}</option>
+                                            <option value="{{ $item->id }}" {{ ($url != $urlForCheck && $product->category_id == $item->id) ? 'selected' : '' }}>{{$item->name}}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -99,6 +99,9 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="subCategory">Select Sub Category</label>
+                                        @if ($url != $urlForCheck)
+                                            <input type="hidden" id="subCategoryIdForselect" value="{{$product->sub_category_id}}">
+                                        @endif
                                         <select name="subCategory" id="subCategory" class="form-control">
                                             <option value="">Please select a sub-category</option>
                                         </select>
@@ -119,7 +122,7 @@
                                             <option value="">Please select a brand</option>
                                             @if (!empty($brand))
                                             @foreach ($brand as $item)
-                                            <option value="{{ $item->id }}">{{$item->name}}</option>
+                                            <option value="{{ $item->id }}" {{ ($url != $urlForCheck && $product->brand_id == $item->id) ? 'selected' : '' }}>{{$item->name}}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -134,7 +137,7 @@
                                     <div class="form-group">
                                         <label for="featuredProduct">Featured Product</label>
                                         <select name="featuredProduct" id="featuredProduct" class="form-control">
-                                            <option value="Yes">Yes</option>
+                                            <option value="Yes" {{ ($url != $urlForCheck && $product->is_featured == 'Yes') ? 'selected' : '' }}>Yes</option>
                                             <option value="No" selected>No</option>
                                         </select>
                                         <p class="error"></p>
@@ -179,14 +182,14 @@
                                     <div class="form-group">
                                         <label for="price">Product Price</label>
                                         <input type="number" class="form-control" name="price" id="price"
-                                            placeholder="Enter product price" value="">
+                                            placeholder="Enter product price" value="{{ $url == $urlForCheck ? old('price') : $product->price}}">
                                         <p class="error"></p>
                                     </div>
     
                                     <div class="form-group">
                                         <label for="comAtprice">Compare at price</label>
                                         <input type="number" class="form-control mb-2 pb-2" name="comAtprice" id="comAtprice"
-                                            placeholder="Enter compare at price" value="">
+                                            placeholder="Enter compare at price" value="{{ $url == $urlForCheck ? old('comAtprice') : $product->compare_price}}">
                                         <p class="error"></p>
                                         <span>To show a reduced price, move the product’s original price into Compare at price. Enter a
                                             lower value into Product Price.</span>
@@ -205,14 +208,14 @@
                                     <div class="form-group">
                                         <label for="sku">SKU (Stock Keeping Unit)</label>
                                         <input type="text" class="form-control" name="sku" id="sku" placeholder="Enter product SKU"
-                                            value="">
+                                            value="{{ $url == $urlForCheck ? old('sku') : $product->sku}}">
                                         <p class="error"></p>
                                     </div>
     
                                     <div class="form-group">
                                         <label for="barcode">Barcode</label>
                                         <input type="text" class="form-control" name="barcode" id="barcode"
-                                            placeholder="Enter product barcode" value="">
+                                            placeholder="Enter product barcode" value="{{ $url == $urlForCheck ? old('barcode') : $product->barcode}}">
                                         <p class="error"></p>
                                     </div>
     
@@ -226,7 +229,7 @@
                                     <div class="form-group">
                                         <label for="quantity">Quantity</label>
                                         <input type="number" class="form-control" name="quantity" id="quantity"
-                                            placeholder="Enter product quantity" value="">
+                                            placeholder="Enter product quantity" value="{{ $url == $urlForCheck ? old('quantity') : $product->quantity}}">
                                         <p class="error"></p>
                                     </div>
                                 </div>
@@ -258,6 +261,11 @@
                 $("#trackQuantity").val('No');
             }
         });
+
+        if ("{{ $url }}" !== "{{ $urlForCheck }}") {
+            // After populating the options dynamically, trigger the change event
+            $("#category").trigger('change');
+        }
     });
 
     Dropzone.autoDiscover = false;
@@ -320,7 +328,12 @@
                 success: function(response){
                     $("#subCategory").find("option").not(':first').remove();
                     $.each(response.subCategory, function(key,item){
-                        $("#subCategory").append(`<option value="${item.id}">${item.name}</option>`);
+                        let subCategoryIdForselect = $("#subCategoryIdForselect").val();
+                        let selected = '';
+                        if((typeof subCategoryIdForselect !== 'undefined') && (subCategoryIdForselect == item.id )){
+                            selected = 'selected';
+                        }
+                        $("#subCategory").append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
                     });
                     
                 }
