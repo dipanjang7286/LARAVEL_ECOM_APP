@@ -221,7 +221,7 @@
     
     
                                     <div class="form-group icheck-primary d-inline">
-                                        <input type="hidden" name="trackQuantity" id="trackQuantity" value="Yes">
+                                        <input type="hidden" name="trackQuantity" id="trackQuantity" value="{{ $url == $urlForCheck ? 'Yes' : $product->track_quantity}}">
                                         <input type="checkbox" id="trackQuantity_checkbox" checked>
                                         <label for="trackQuantity_checkbox" class="ml-2">Track Quantity</label>
                                     </div>
@@ -261,6 +261,12 @@
                 $("#trackQuantity").val('No');
             }
         });
+
+        if($("#trackQuantity").val() == 'Yes'){
+            $('#trackQuantity_checkbox').prop('checked', true);
+        }else{
+            $('#trackQuantity_checkbox').prop('checked', false);
+        }
 
         if ("{{ $url }}" !== "{{ $urlForCheck }}") {
             // After populating the options dynamically, trigger the change event

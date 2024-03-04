@@ -145,8 +145,74 @@ class ProductController extends Controller
         }
     }
 
-    public function update(){
+    public function update($id, Request $request){
+        $response=[];
+        $product = Product::find($id);
+        if(empty($product)){
+            return response()->json([
+                'status'=>false,
+                'notFound'=>true,
+                'message'=>'Product not found'
+            ]);
+        }
+        try {
+            $request->validate(
+                [
+                    "title"=> "required",
+                    "slug"=>"required|unique:products,slug,".$id.",id",
+                    "category"=>"required",
+                    "featuredProduct"=>"required|in:Yes,No",
+                    "price"=>"required|numeric",
+                    "sku"=>"required|unique:products,sku,".$id.",id",
+                    "trackQuantity"=>"required|in:Yes,No",
+                    "quantity" => ($request->trackQuantity && $request->trackQuantity == 'Yes') ? 'required|numeric' : '', // Conditional validation rule for quantity
+                ],
+                [
+                    "title.required"=> "The product title is empty",
+                    "slug.required"=> "The product slug is empty.",
+                    "slug.unique"=> "The product slug is already present. Please enter different slug",
+                    "category.required"=> "The product category is empty",
+                    "featuredProduct.required"=> "The feature product is not selected",
+                    "price.required"=> "The product price is empty",
+                    "price.numeric" =>"The product price must be a number",
+                    "sku.required"=> "The product sku is empty",
+                    "sku.unique"=> "The product sku is already present. Please enter different sku",
+                    "trackQuantity.required"=> "The product track quantity is should be checked",
+                    "quantity.required" => "The product quantity is required when track quantity is checked",
+                    "quantity.numeric" => "The product quantity must be a number",
+                    
+                ]
+            );
 
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->comAtprice;
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->subCategory;
+            $product->brand_id = $request->brand;
+            $product->is_featured = $request->featuredProduct;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_quantity = $request->trackQuantity;
+            $product->quantity = $request->quantity;
+            $product->status = $request->status;
+            $product->save();
+
+            $response = [
+                'success' => true,
+                'message' => 'Product updated successfully.',
+            ];
+            $request->session()->flash('success',$response['message']);
+        } catch (ValidationException $e) {
+            $response = [
+                'success' => false,
+                'message' => $e->validator->errors(),
+            ];
+        }
+
+        return response()->json($response);
     }
 
     public function delete(){
