@@ -134,13 +134,14 @@ class ProductController extends Controller
     public function edit($id){
         $product = Product::find($id);
         $category = Category::orderBy('name', 'ASC')->get();
+        $productImages = ProductImage::where('product_id', $product->id)->get();
         $brand = Brand::orderBy('name','ASC')->get();
         if(is_null($product)){
             return redirect()->route('product.all')->with('error','Trying to access a product which is not present');
         }else{
             $title = "Edit Product";
             $url = url('admin/product/update/').'/'.$id;
-            $data = compact('title','url','product','category','brand');
+            $data = compact('title','url','product','category','brand','productImages');
             return view('admin.products.create_product')->with($data);
         }
     }

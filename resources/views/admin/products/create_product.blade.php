@@ -166,7 +166,19 @@
                     </div>
 
                     <div class="row" id="product-galary">
-                        
+                        @if ($url != $urlForCheck)
+                            @foreach ($productImages as $image)
+                                <div class="col-md-3" id="image-row-{{$image->id}}">
+                                    <div class="card">
+                                        <input type="hidden" name="image_array[]" value="{{$image->id}}">
+                                        <img src="{{asset('uploads/product/small/'.$image->image)}}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <a href="javascript:void(0)" onclick="deleteImageFromCard({{$image->id}})" class="btn btn-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
 
                     <div class="row justify-content-evenly">
