@@ -167,6 +167,7 @@
 
                     <div class="row" id="product-galary">
                         @if ($url != $urlForCheck)
+                            <input type="hidden" id="product_id" value="{{ $product->id }}">
                             @foreach ($productImages as $image)
                                 <div class="col-md-3" id="image-row-{{$image->id}}">
                                     <div class="card">
@@ -291,7 +292,7 @@
         url: ("{{ $url }}" !== "{{ $urlForCheck }}") ? " {{ route('product-image.update') }} " : " {{route('temp-image.create')}} ", // post route for image upload for category. For edit
         maxFiles: 10,
         paramName: 'image', // by default paramName : 'file'. I change it to 'image'.
-        params:("{{ $url }}" !== "{{ $urlForCheck }}") ? {'product_id': '{{$product->id}}'} : '',
+        params:("{{ $url }}" !== "{{ $urlForCheck }}") ? {'product_id': $('#product_id').val() } : '',
         addRemoveLinks: true,
         acceptedFiles: "image/jpeg,image/jpg,image/png,image/gif",
         headers: {
