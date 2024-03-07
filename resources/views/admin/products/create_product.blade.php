@@ -288,9 +288,10 @@
 
     Dropzone.autoDiscover = false;
     const dropzone = $('#image').dropzone({
-        url: "{{route('temp-image.create')}}", // post route for image upload for category
+        url: ("{{ $url }}" !== "{{ $urlForCheck }}") ? " {{ route('product-image.update') }} " : " {{route('temp-image.create')}} ", // post route for image upload for category. For edit
         maxFiles: 10,
         paramName: 'image', // by default paramName : 'file'. I change it to 'image'.
+        params:("{{ $url }}" !== "{{ $urlForCheck }}") ? {'product_id': '{{$product->id}}'} : '',
         addRemoveLinks: true,
         acceptedFiles: "image/jpeg,image/jpg,image/png,image/gif",
         headers: {
