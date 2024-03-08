@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductImageController extends Controller
@@ -42,6 +43,29 @@ class ProductImageController extends Controller
             'image_id'=> $productImage->id,
             'imagePath'=> asset('/uploads/product/small/' . $imageName),
             'message'=> "Image uploaded successfully"
+        ]);
+    }
+
+    public function deleteImage(Request $request){
+        $productImage = ProductImage::find($request->id);
+
+        if(empty($productImage)){
+            return response()->json([
+                'status'=>false,
+                'message'=> "Image not found"
+            ]);
+        }
+
+        // delete image from folder
+        File::delete(public_path('uploads/product/large/' . $productImage->image));
+        File::delete(public_path('uploads/product/small/' . $productImage->image));
+
+        //delete from db
+        $productImage->delete();
+
+        return response()->json([
+            'status'=>true,
+            'message'=> "Image deleted successfully"
         ]);
     }
 }

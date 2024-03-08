@@ -84,6 +84,8 @@ Route::group(['prefix'=>'admin'],function(){
 
         Route::post('/product-image/update',[ProductImageController::class, 'update'])->name('product-image.update');
 
+        Route::get('/product-image/delete',[ProductImageController::class, 'deleteImage'])->name('product-image.delete');
+
         Route::get('/getSlug',function(Request $request){
             $slug = '';
             if(!empty($request->title)){

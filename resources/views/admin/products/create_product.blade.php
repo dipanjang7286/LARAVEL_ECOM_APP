@@ -316,7 +316,43 @@
         }
     })
     function deleteImageFromCard(id){
-        $(`#image-row-${id}`).remove();
+        if ("{{ $url }}" !== "{{ $urlForCheck }}") {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this image!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes !"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{route('product-image.delete')}}",
+                        type: 'get',
+                        data:{id: id},
+                        success: function (res) {
+                            if(res.status === true){
+                                $(`#image-row-${id}`).remove();
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: res.message, // Message from the server response
+                                    icon: 'success',
+                                });
+                            }else{
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: res.message, // Message from the server response
+                                    icon: 'error',
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }else{
+            $(`#image-row-${id}`).remove();
+        }
     }
 </script>
 <script>
