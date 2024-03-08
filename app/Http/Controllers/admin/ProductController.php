@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -216,7 +217,36 @@ class ProductController extends Controller
         return response()->json($response);
     }
 
-    public function delete(){
+    public function delete($id, Request $request){
+        $product = Product::find($id);
+        if(empty($product)){
+            $request->session()->flash('error','Product not found');
 
+            return response()->json([
+                'status'=>false,
+                'notFound'=>true,
+                'message'=>'Product not found'
+            ]);
+        }
+
+        // Finding and deleting product image
+
+        $productImage = ProductImage::where('product_id',$id)->get();
+        if(!empty($productImage)){
+            foreach($productImage as $pi){
+                File::delete(public_path('uploads/product/large/' . $pi->image));
+                File::delete(public_path('uploads/product/small/' . $pi->image));
+            }
+            ProductImage::where('product_id',$id)->delete();
+        }
+
+        $product->delete();
+
+        $request->session()->flash('success','Product deleted successfully');
+        return response()->json([
+            'status'=>true,
+            'message'=>'Product deleted successfully'
+        ]); 
     }
+    
 }
