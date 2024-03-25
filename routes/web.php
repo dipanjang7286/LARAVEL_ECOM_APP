@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 
 Route::get('/', function () {
     // return view('welcome');
-    return view('frontend.index');
+    return view('frontend.layouts.index');
 });
 
 // admin
